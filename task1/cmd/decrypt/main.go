@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	textPtr := flag.String("t", "Hello, world!", "Text to decrypt. Spaces are not allowed.")
+	textPtr := flag.String("t", "Hello, world!", "Text to decrypt. To pass strings with spaces enclose them with single quotes.")
 	keyPtr := flag.Int("k", 3, "Encryption/decryption key.")
 	flag.Parse()
 
