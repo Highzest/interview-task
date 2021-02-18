@@ -41,10 +41,6 @@ func main() {
 		}
 	}
 
-	for i := 0; i < m; i++ {
-		fmt.Println(castle.Rooms[i])
-	}
-
 	paths := castle.FindPathCount()
 	if paths != 0 {
 		fmt.Println(paths)

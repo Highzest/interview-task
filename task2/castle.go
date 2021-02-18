@@ -1,8 +1,9 @@
 package task2
 
 type coords struct {
-	x int
-	y int
+	x    int
+	y    int
+	step int
 }
 
 func (c *coords) checkBoundaries(m, n int) bool {
@@ -48,31 +49,31 @@ func NewCastle(m, n int) *Castle {
 	return &castle
 }
 
-var directions = []coords{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
+var directions = []coords{{0, 1, 1}, {1, 0, 1}, {0, -1, 1}, {-1, 0, 1}}
 
 // FindPathCount is a function that calculates number of possible paths from bottom left to top right corner
 func (c *Castle) FindPathCount() int {
 	allPathsNum := 0
-	exit := coords{0, c.n - 1}
+	exit := coords{0, c.n - 1, 0}
 	queue := make([]coords, 0)
 
 	// Bottom left room is first to explore
-	queue = append(queue, coords{c.m - 1, 0})
+	queue = append(queue, coords{c.m - 1, 0, 1})
 
 	for len(queue) > 0 {
 		// Remove first coords from the queue and assign them to a temp variable that implies current position
-		currentPos := coords{queue[0].x, queue[0].y}
+		currentPos := coords{queue[0].x, queue[0].y, queue[0].step}
 		queue = queue[1:]
 
 		c.Rooms[currentPos.x][currentPos.y].setBlocked()
 
-		// Check if current position
-		if currentPos.compare(&exit) {
+		// Check if current position is on exit
+		if currentPos.compare(&exit) && currentPos.step <= (c.m+c.n-1) {
 			allPathsNum++
 		}
 
 		for _, d := range directions {
-			nextPos := coords{currentPos.x + d.x, currentPos.y + d.y}
+			nextPos := coords{currentPos.x + d.x, currentPos.y + d.y, currentPos.step + 1}
 
 			if nextPos.checkBoundaries(c.m, c.n) && c.Rooms[nextPos.x][nextPos.y].isOpen() {
 				queue = append(queue, nextPos)
